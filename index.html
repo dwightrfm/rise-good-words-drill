@@ -46,12 +46,10 @@ nav button.on{background:rgba(124,200,255,.2);color:#fff;box-shadow:inset 0 0 0 
 .lt .nm{font-size:18px;font-weight:720;margin-top:8px;letter-spacing:-.02em}
 .lt .ds{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--ink);margin-top:2px}
 .lt .more{max-height:0;overflow:hidden;transition:max-height .5s var(--ease)}
-.lt.open .more{max-height:220px}
+.lt.open .more{max-height:320px}
 .lt .ex{font-size:13px;line-height:1.5;color:var(--ink);margin-top:10px}
-.lt .no{font-size:12px;line-height:1.5;color:var(--bad);margin-top:6px;text-decoration:line-through}
-.doors{margin-top:10px;padding:14px 16px;display:flex;gap:14px;align-items:center;border-radius:20px}
-.doors b{white-space:nowrap;font-size:22px;font-weight:800;color:var(--gold);letter-spacing:-.03em}
-.doors span{font-size:14px;color:var(--mut);line-height:1.4}
+.lt .no{font-size:15px;font-weight:650;line-height:1.4;color:var(--bad);margin-top:10px}
+.nv{display:block;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.22em;color:var(--bad);margin-bottom:3px}
 
 /* objection cards */
 .meter{display:flex;gap:5px;margin-top:20px}
@@ -101,11 +99,10 @@ textarea:focus{box-shadow:inset 0 0 0 2px var(--acc)}
 .seg button{flex:1;height:40px;border-radius:999px;font-size:14px;font-weight:650;color:var(--mut)}
 .seg button.on{background:rgba(124,200,255,.2);color:#fff}
 .sheet{margin-top:14px;display:flex;flex-direction:column;gap:8px}
-.sr{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:center;padding:14px 16px;border-radius:18px;text-align:left}
-.sr .tg{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-weight:800;color:#06121c;background:linear-gradient(160deg,#fff,var(--acc))}
-.sr .tg.ab{font-size:11px;background:linear-gradient(160deg,#fff,var(--gold))}
-.sr .b{font-size:14px;color:var(--mut);text-decoration:line-through;text-decoration-color:var(--bad)}
-.sr .g{font-size:17px;font-weight:650;margin-top:4px;transition:all .3s var(--ease)}
+.sr{display:block;padding:14px 18px;border-radius:18px;text-align:left}
+.sr .b{font-size:16px;font-weight:650;line-height:1.35;color:var(--bad)}
+.sr .g::before{content:"SAY";display:block;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.22em;color:var(--ok);margin-bottom:2px}
+.sr .g{font-size:17px;font-weight:650;margin-top:10px;transition:all .3s var(--ease)}
 .cover .sr .g{filter:blur(8px);opacity:.6}
 .cover .sr.peek .g{filter:none;opacity:1}
 .toggle{margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;color:var(--mut)}
@@ -132,7 +129,6 @@ textarea:focus{box-shadow:inset 0 0 0 2px var(--acc)}
     <h1>Good words <em>OPEN</em> doors.</h1>
     <p class="lede">Bad words close them. Every good word lives under one of four letters. Tap a letter.</p>
     <div class="letters" id="letters"></div>
-    <div class="glass doors"><b>A / B</b><span><b style="font-size:14px;color:#fff">Plus two doors.</b> Never “When are you free?” Always “Tuesday or Thursday?”</span></div>
   </section>
 
   <!-- CARDS -->
@@ -196,13 +192,13 @@ const shuffle = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { cons
 /* ---------- the words ---------- */
 const OPEN = [
   { L: 'O', nm: 'Own it', ds: 'It’s their money.', ex: 'own · invest · contribute · savings program · authorize · moving forward', no: 'buy, pay, policy, premium, sign, commit' },
-  { L: 'P', nm: 'Partner up', ds: 'Next to us, not under us.', ex: 'business partner · mentor · our team · we · platform · let’s', no: 'recruit, join, upline, my team, the company, you should' },
+  { L: 'P', nm: 'Partner up', ds: 'Next to us, not under us.', ex: 'business partner · mentor · our team · we · platform · professional network · let’s', no: 'recruit, join, upline, my team, the company, agent, you should' },
   { L: 'E', nm: 'Easy chat', ds: 'A visit, not a pitch.', ex: 'share · chat · visit · event · personal introductions · would you be open to', no: 'appointment, pitch, meeting, referral, tell, commands' },
   { L: 'N', nm: 'New future', ds: 'Where they’re headed.', ex: 'helping families · entrepreneur · financial space · compensation · challenge · peace of mind', no: 'sell, side hustle, insurance, extra income, problem, financial freedom' }
 ];
 const SHEET = {
   fam: [['N', 'Closing, sales, sell', 'Helping families, implementing plans and strategies, securing their future'], ['E', 'Send me a referral', 'Personal introductions, recommendations'], ['N', 'Insurance license, insurance industry', 'Financial industry, financial space'], ['O', 'Buy, purchase, pay', 'Own, invest, contribute'], ['O', 'Policy, contract, product, life insurance, annuity', 'Savings program, financial vehicle, tool or plan, tax-free retirement plan, tax optimization strategy, asset protection'], ['O', 'Commit, commitment', 'Moving forward, start saving, start investing, start contributing'], ['O', 'Premium, cost, price, payment, fee', 'Contribution, investment, amount, good faith deposit'], ['O', 'Signature, sign', 'Authorization, authorize, endorse, approve, verify'], ['P', '“You should do this.”', '“Let’s optimize…” “How about we strategize…”'], ['E', 'Tell', 'Recommend, advise'], ['E', 'Giving instructions or commands', '“Would you be open to…?” “How about we…?” “What are your thoughts about…?”']],
-  par: [['P', 'The company', 'Platform, opportunity, community, organization'], ['N', 'Side hustle, job, part-time gig', 'Entrepreneurship, entrepreneur, business'], ['E', 'Appointment, presentation, pitch, meeting', 'Share, get together, chat, visit, virtual event'], ['P', 'Upline, boss, manager, supervisor, SMD, my leader', 'Mentor, trainer, coach, friend, successful in business and life'], ['P', 'Join, recruit', 'Get access to the training program, get involved, come on board, get started'], ['P', 'Recruit, downline, sideline', 'Business partner, teammate'], ['P', 'My team, me, my baseshop', 'Our team, we, our organization, our firm'], ['A/B', 'When are you free? When do you want to meet?', 'What’s better for you, A or B? Which would you prefer?'], ['N', 'Commission, contract level, points, earning money, extra income, side income, make more money', 'Compensation, business revenue, income that doesn’t stop when you stop, multiple streams of income'], ['N', 'Problem, issue', 'Challenge, opportunity to grow, personal development, growing'], ['N', '“I can’t afford it / do it / attend because…”', '“I must because…” State your whys and get to work.'], ['N', 'Financial freedom', 'Securing your financial future, creating peace of mind, financial stability']]
+  par: [['P', 'The company', 'Platform, opportunity, community, organization, professional network'], ['N', 'Side hustle, job, part-time gig', 'Entrepreneurship, entrepreneur, business'], ['E', 'Appointment, presentation, pitch, meeting', 'Share, get together, chat, visit, virtual event'], ['P', 'Upline, boss, manager, supervisor, SMD, my leader', 'Mentor, trainer, coach, friend, successful in business and life'], ['P', 'Join, recruit', 'Get access to the training program, get involved, come on board, get started'], ['P', 'Recruit, downline, sideline', 'Business partner, teammate'], ['P', 'My team, me, my baseshop', 'Our team, we, our organization, our professional network, our firm'], ['P', 'Agent', 'Professional'], ['A/B', 'When are you free? When do you want to meet?', 'What’s better for you, A or B? Which would you prefer?'], ['N', 'Commission, contract level, points, earning money, extra income, side income, make more money', 'Compensation, business revenue, income that doesn’t stop when you stop, multiple streams of income'], ['N', 'Problem, issue', 'Challenge, opportunity to grow, personal development, growing'], ['N', '“I can’t afford it / do it / attend because…”', '“I must because…” State your whys and get to work.'], ['N', 'Financial freedom', 'Securing your financial future, creating peace of mind, financial stability']]
 };
 /* objection cards: the 10 Common Objections on the Hub's Scripts page, 3 good-word answers each */
 const OBJ = [
@@ -227,7 +223,7 @@ const OBJ = [
     'That’s fair. What would it take for you to feel confident this <b>opportunity</b> is the real deal?',
     'Would you be open to a <b>visit</b> with <b>our team</b> so you decide on what you see, not what you heard? <b>Saturday or Tuesday?</b>'] },
   { q: 'I don’t know enough people.', real: 'I’m not sure I can do this.', a: [
-    'What does “not enough people” look like for you? Most of our <b>business partners</b> said the same thing on day one.',
+    'I hear you. Most of our <b>business partners</b> said the same thing on day one.',
     'You don’t need a big network. Your <b>mentor</b> shows you how to grow through <b>personal introductions</b>, one family at a time. What would that change for you?',
     'What stopped you from looking at an <b>opportunity</b> like this before?'] },
   { q: 'I need to think about it.', real: 'I’m not convinced yet, or I’m afraid to say no.', a: [
@@ -253,7 +249,7 @@ const BAD = [
   [/\b(buy|buying|purchase)\b/gi, 'own'], [/\b(pay|paying|payment|payments)\b/gi, 'contribute, contribution'], [/\bpolic(y|ies)\b/gi, 'savings program'], [/\bcontracts?\b/gi, 'plan'], [/\bproducts?\b/gi, 'financial vehicle'],
   [/\bpremiums?\b/gi, 'contribution'], [/\b(cost|costs|price|fees?)\b/gi, 'amount, contribution'], [/\b(sign|signed|signing|signature)\b/gi, 'authorize'], [/\bcommit(ment|ted)?\b/gi, 'moving forward, start saving'],
   [/\b(problems?|issues?)\b/gi, 'challenge'], [/\bwhen are you free\b|\bwhen do you want to meet\b/gi, 'A or B?'], [/\bside hustle\b|\bgig\b|\bjobs?\b/gi, 'business'], [/\b(appointment|pitch|presentation|meeting)s?\b/gi, 'chat, visit, get together'],
-  [/\b(upline|boss|manager|supervisor|my leader)\b/gi, 'mentor, coach'], [/\b(join|joining)\b/gi, 'get involved, come on board'], [/\brecruit(s|ing)?\b|\bdownline\b|\bsideline\b/gi, 'business partner'], [/\bmy (team|baseshop)\b/gi, 'our team'], [/\bthe company\b/gi, 'our platform, our organization'],
+  [/\b(upline|boss|manager|supervisor|my leader)\b/gi, 'mentor, coach'], [/\b(join|joining)\b/gi, 'get involved, come on board'], [/\brecruit(s|ing)?\b|\bdownline\b|\bsideline\b/gi, 'business partner'], [/\bmy (team|baseshop)\b/gi, 'our team'], [/\bthe company\b/gi, 'our platform, our professional network'], [/\bagents?\b/gi, 'professional'],
   [/\b(commission|contract level|points|extra income|side income|earning money|make more money)\b/gi, 'compensation, multiple streams of income'], [/\bfinancial freedom\b/gi, 'peace of mind, financial stability'], [/\bcan'?t (afford|because)\b/gi, 'I must because'],
   [/\breferrals?\b/gi, 'personal introductions'], [/\byou should\b/gi, 'let’s, how about we'], [/\b(let me tell you|i'?ll tell you|i'?m telling you)\b/gi, 'recommend']
 ];
@@ -288,7 +284,7 @@ function show(v) {
 $$('#nav button').forEach(b => b.onclick = () => show(b.dataset.v));
 
 /* ---------- learn ---------- */
-$('#letters').innerHTML = OPEN.map(o => `<button class="glass lt"><div class="L">${o.L}</div><div class="nm">${o.nm}</div><div class="ds">${o.ds}</div><div class="more"><div class="ex">${o.ex}</div><div class="no">${o.no}</div></div></button>`).join('');
+$('#letters').innerHTML = OPEN.map(o => `<button class="glass lt"><div class="L">${o.L}</div><div class="nm">${o.nm}</div><div class="ds">${o.ds}</div><div class="more"><div class="ex">${o.ex}</div><div class="no"><span class="nv">NEVER USE</span>${o.no}</div></div></button>`).join('');
 $$('.lt').forEach(b => b.onclick = () => b.classList.toggle('open'));
 
 /* ---------- objection cards: "Again" sends a card to the back of the deck ---------- */
@@ -373,7 +369,7 @@ if (SR) {
 /* ---------- sheet ---------- */
 let sheetKey = 'fam';
 function paintSheet() {
-  $('#sheet').innerHTML = SHEET[sheetKey].map(r => `<button class="glass sr"><span class="tg ${r[0] === 'A/B' ? 'ab' : ''}">${r[0]}</span><span><div class="b">${r[1]}</div><div class="g">${r[2]}</div></span></button>`).join('');
+  $('#sheet').innerHTML = SHEET[sheetKey].map(r => `<button class="glass sr"><div class="b"><span class="nv">NEVER USE</span>${r[1]}</div><div class="g">${r[2]}</div></button>`).join('');
   $$('.sr').forEach(b => b.onclick = () => b.classList.toggle('peek'));
 }
 $$('#seg button').forEach(b => b.onclick = () => { $$('#seg button').forEach(x => x.classList.toggle('on', x === b)); sheetKey = b.dataset.c; paintSheet() });
