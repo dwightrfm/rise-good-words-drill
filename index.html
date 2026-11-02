@@ -53,8 +53,14 @@ nav button.on{background:rgba(124,200,255,.2);color:#fff;box-shadow:inset 0 0 0 
 
 /* objection cards */
 .meter{display:flex;gap:5px;margin-top:20px}
-.meter i{flex:1;height:5px;border-radius:5px;background:rgba(255,255,255,.12);transition:background .4s}
-.meter i.done{background:var(--acc);box-shadow:0 0 10px var(--acc)}
+.meter i{flex:1;height:5px;border-radius:5px;background:rgba(255,255,255,.12);transition:background .4s,transform .3s}
+.meter i.ok{background:var(--acc);box-shadow:0 0 10px var(--acc)}
+.meter i.cur{background:#fff;transform:scaleY(1.6)}
+#cardArea{touch-action:pan-y}
+.card.nx{animation:nx .35s var(--ease)}
+.card.pv{animation:pv .35s var(--ease)}
+@keyframes nx{from{opacity:0;transform:translateX(48px)}}
+@keyframes pv{from{opacity:0;transform:translateX(-48px)}}
 .card{display:block;width:100%;margin-top:16px;padding:26px 22px;text-align:left;min-height:320px}
 .card.turn{animation:turn .36s var(--ease)}
 @keyframes turn{50%{transform:scaleX(.02)}}
@@ -92,6 +98,8 @@ textarea:focus{box-shadow:inset 0 0 0 2px var(--acc)}
 .ck.x i{background:var(--bad)}
 .flag{color:var(--bad);font-weight:650}
 .model{margin-top:14px;font-family:var(--serif);font-style:italic;font-size:20px;line-height:1.35}
+.aft{margin:12px 0 0;font-size:14px;line-height:1.45;color:var(--mut)}
+.aft b{color:var(--gold)}
 .model b{font-family:Inter,sans-serif;font-style:normal;font-weight:700;font-size:.85em;color:var(--acc)}
 
 /* sheet */
@@ -134,7 +142,7 @@ textarea:focus{box-shadow:inset 0 0 0 2px var(--acc)}
   <!-- CARDS -->
   <section class="view" id="v-cards">
     <h1>Objections. <em>Answered.</em></h1>
-    <p class="lede">The 10 things people say most. Answer it out loud first. Then flip for 3 ways to say it with good words.</p>
+    <p class="lede">The 10 things people say most. Answer it out loud first. Then flip for 3 ways to say it with good words. Swipe to go through all 10.</p>
     <div class="meter" id="meter"></div>
     <div id="cardArea"></div>
   </section>
@@ -254,16 +262,16 @@ const BAD = [
   [/\breferrals?\b/gi, 'personal introductions'], [/\byou should\b/gi, 'let’s, how about we'], [/\b(let me tell you|i'?ll tell you|i'?m telling you)\b/gi, 'recommend']
 ];
 const SCEN = [
-  { k: 'say', tag: 'Step 1 · Booking', setup: 'A friend says your work sounds interesting. Book a time to talk more.', must: [['chat or visit', /chat|visit|get together|share|coffee/i], ['A or B', /\bor\b/i]], model: 'I’d love to <b>share</b> more. What’s better for you, <b>Tuesday evening or Thursday at lunch</b>, to grab a coffee and <b>chat</b>?' },
-  { k: 'say', tag: 'Step 2 · The invite', setup: 'Invite a sharp, ambitious friend to Saturday’s event.', must: [['event', /event/i], ['business word', /business|entrepreneur|opportunity|platform/i], ['A or B', /\bor\b/i]], model: 'You’ve always had an <b>entrepreneur</b> streak. We have an <b>event</b> Saturday about building a <b>business</b> in the financial space. Want to come at 10, or catch the online one at 2?' },
-  { k: 'say', tag: 'Step 3 · Who is your boss?', setup: 'A future partner asks: “So who is your boss?”', must: [['mentor or coach', /mentor|coach|trainer/i], ['our team', /our team|community|together/i]], model: 'I work next to a <b>mentor</b> who has built a <b>business</b> like this, and <b>our team</b> trains together every week.' },
-  { k: 'say', tag: 'Step 4 · The money question', setup: 'The family asks: “How much does this cost each month?”', must: [['contribution or amount', /contribut|amount|invest/i], ['A or B', /\bor\b/i]], model: 'Great question. The <b>contribution</b> is up to you. Would starting at <b>$200 or $300</b> feel more comfortable for your family?' },
+  { k: 'say', tag: 'Step 1 · Booking', setup: 'A friend says your work sounds interesting. Book a time to talk more.', must: [['chat or visit', /chat|visit|get together|share|coffee/i], ['A or B', /\bor\b/i]], model: 'I’d love to <b>share</b> more. What’s better for you, <b>weekday evenings or weekends</b>, to grab a coffee and <b>chat</b>?' },
+  { k: 'say', tag: 'Step 2 · The invite', setup: 'Invite a sharp, ambitious friend to Saturday’s event.', must: [['event', /event/i], ['business word', /business|entrepreneur|opportunity|platform/i], ['A or B', /\bor\b/i]], model: 'You’ve always had an <b>entrepreneur</b> streak. We have an <b>event</b> Saturday about building a <b>business</b> in the financial space. Want to come <b>in person at 11am</b>, or catch the <b>virtual event</b> at 12pm EST?' },
+  { k: 'say', tag: 'Step 3 · What is the company called?', setup: 'A future partner asks: “What is the company called?”', must: [['platform or network', /platform|community|organization|network/i], ['our team', /our team|together|mentor/i]], model: 'It’s World Financial Group. It’s the <b>platform</b> we use to build a <b>business</b> in the financial space, and <b>our team</b> trains together every week.' },
+  { k: 'say', tag: 'Step 4 · The money question', setup: 'The family asks: “How much does this cost each month?”', must: [['contribution or amount', /contribut|amount|invest/i], ['A or B', /\bor\b/i]], model: 'Great question. The <b>contribution</b> is up to you. Would you rather start at <b>$1,000 or something closer to $500</b>?' },
   { k: 'say', tag: 'Objection · Is this sales?', setup: 'They ask: “Wait, is this a sales job?”', must: [['business word', /business|entrepreneur/i], ['help', /help/i]], model: 'Fair question. It’s a <b>business</b>. We <b>help families</b> understand their money, and we teach you to do the same. Would you be open to seeing how it works?' },
   { k: 'say', tag: 'After Step 5 · Introductions', setup: 'The family just started their savings program. Ask for introductions.', must: [['personal introductions', /introduc/i], ['open question', /open|who/i]], model: 'Who are two families you care about who would want to see this? Would you be open to a <b>personal introduction</b>?' },
-  { k: 'ask', tag: 'Step 5 · Moving to the application', setup: 'You walked them through the plan. They like it. Now move to the application.', must: [['own', /\bown/i], ['contribution', /contribut/i], ['authorize', /authoriz/i], ['A or B', /\bor\b/i]], model: 'Everything you shared tells me this <b>savings program</b> fits. What’s better for your first <b>contribution</b>, the 1st or the 15th? Perfect. I just need your <b>authorization</b> right here, and it’s yours to <b>own</b>.' },
+  { k: 'ask', tag: 'Step 5 · Moving to the application', setup: 'You walked them through the plan. They like it. Now move to the application.', must: [['own', /\bown/i], ['contribution', /contribut/i], ['authorize', /authoriz/i], ['A or B', /\bor\b/i]], model: 'What’s better for your first <b>contribution</b>, the 1st or the 15th? Perfect. I just need your <b>authorization</b> right here, and it’s yours to <b>own</b>.' },
   { k: 'ask', tag: 'They already have a plan', setup: 'They have a plan through work and feel “fine.” Ask the closing question.', must: [['open to', /open to/i], ['optimize', /optimi/i]], model: 'Would you be <b>open to</b> looking at different ways to <b>optimize</b> your current plan?' },
   { k: 'ask', tag: 'The old 401(k)', setup: 'They left an old 401(k) at a past job, sitting in the market.', must: [['open to', /open to/i], ['protected', /protect/i]], model: 'Would you be <b>open to</b> moving it from an <b>unprotected</b> place to a <b>protected</b> place?' },
-  { k: 'ask', tag: 'Future partner · Next step', setup: 'They loved the event and want to know more about the business.', must: [['get started or involved', /get (started|involved)|come on board|access/i], ['A or B', /\bor\b/i]], model: 'Sounds like you’re ready to <b>get started</b>. Would tonight or tomorrow morning be better to get you access to the <b>training</b>?' }
+  { k: 'ask', tag: 'Future partner · Next step', setup: 'They loved the event and want to know more about the business.', must: [['learn more', /learn more|open to/i], ['training program', /training/i]], model: 'Would you like to learn more about what it takes to get <b>access</b> to the world class <b>training program</b>?', after: 'Then walk them through <b>TLTC</b>: Training, Licensing, Time Commitment.' }
 ];
 
 /* ---------- streak ---------- */
@@ -278,7 +286,7 @@ function show(v) {
   const target = v === 'ask' ? 'say' : v;
   $$('.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + target));
   if (v === 'say' || v === 'ask') { sayMode = v; paintPick() }
-  if (v === 'cards' && !deck) newDeck();
+  if (v === 'cards' && !order) newDeck();
   scrollTo({ top: 0, behavior: 'smooth' });
 }
 $$('#nav button').forEach(b => b.onclick = () => show(b.dataset.v));
@@ -287,28 +295,44 @@ $$('#nav button').forEach(b => b.onclick = () => show(b.dataset.v));
 $('#letters').innerHTML = OPEN.map(o => `<button class="glass lt"><div class="L">${o.L}</div><div class="nm">${o.nm}</div><div class="ds">${o.ds}</div><div class="more"><div class="ex">${o.ex}</div><div class="no"><span class="nv">NEVER USE</span>${o.no}</div></div></button>`).join('');
 $$('.lt').forEach(b => b.onclick = () => b.classList.toggle('open'));
 
-/* ---------- objection cards: "Again" sends a card to the back of the deck ---------- */
-let deck = null, side = 0, got = 0, missed = new Set();
+/* ---------- objection cards: "Again" keeps a card in play, "Got it" retires it ---------- */
+let order = null, pos = 0, side = 0, known = new Set(), missed = new Set(), sx = 0, sy = 0;
 $('#meter').innerHTML = OBJ.map(() => '<i></i>').join('');
-function newDeck() { deck = shuffle(OBJ.map((_, i) => i)); side = 0; got = 0; missed = new Set(); paintObj() }
-function paintObj(turn) {
-  $$('#meter i').forEach((m, i) => m.classList.toggle('done', i < got));
-  if (!deck.length) return paintObjDone();
-  const o = OBJ[deck[0]];
+function newDeck() { order = shuffle(OBJ.map((_, i) => i)); pos = 0; side = 0; known = new Set(); missed = new Set(); paintObj() }
+function go(step) { pos = (pos + step + order.length) % order.length; side = 0; paintObj(step > 0 ? 'nx' : 'pv') }
+function nextOpen() {
+  if (known.size === order.length) return paintObj();
+  do { pos = (pos + 1) % order.length } while (known.has(order[pos]));
+  side = 0; paintObj('nx');
+}
+function paintObj(anim) {
+  $$('#meter i').forEach((m, i) => { m.classList.toggle('ok', known.has(order[i])); m.classList.toggle('cur', i === pos && known.size < order.length) });
+  if (known.size === order.length) return paintObjDone();
+  const o = OBJ[order[pos]];
   const face = side
     ? `<div class="mono">What they’re really asking</div><div class="real"><b>${o.real}</b></div><ol class="ans">${o.a.map(x => `<li>${x}</li>`).join('')}</ol>`
-    : `<div class="mono">Card ${got + 1} of ${OBJ.length} · They say</div><div class="say">“${o.q}”</div><div class="hint">Say your answer out loud. Then tap to flip.</div>`;
+    : `<div class="mono">Card ${pos + 1} of ${OBJ.length} · They say</div><div class="say">“${o.q}”</div><div class="hint">Say your answer out loud. Tap to flip. Swipe for the next card.</div>`;
   const btns = side
     ? `<div class="duo"><button class="btn ghost" id="again">Again</button><button class="btn" id="gotit">Got it</button></div>`
     : `<button class="btn wide" id="flip" style="margin-top:14px">Show 3 answers</button>`;
-  $('#cardArea').innerHTML = `<div class="glass card ${side ? 'back' : 'front'}${turn ? ' turn' : ''}" id="oc" role="button" tabindex="0">${face}</div>${btns}`;
+  $('#cardArea').innerHTML = `<div class="glass card ${side ? 'back' : 'front'}${anim ? ' ' + anim : ''}" id="oc" role="button" tabindex="0">${face}</div>${btns}`;
   if (side) {
     $('#oc').onclick = () => flip();
-    $('#again').onclick = () => { missed.add(deck[0]); deck.push(deck.shift()); side = 0; paintObj(1) };
-    $('#gotit').onclick = () => { deck.shift(); got++; side = 0; bump(); paintObj(1) };
+    $('#again').onclick = () => { missed.add(order[pos]); nextOpen() };
+    $('#gotit').onclick = () => { known.add(order[pos]); bump(); nextOpen() };
   } else { $('#oc').onclick = $('#flip').onclick = () => flip() }
 }
-function flip() { side = 1 - side; paintObj(1) }
+function flip() { side = 1 - side; paintObj('turn') }
+/* swipe left or right on the card, or use the arrow keys, to move through all 10 */
+$('#cardArea').addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY }, { passive: true });
+$('#cardArea').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+  if (order && known.size < order.length && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) go(dx < 0 ? 1 : -1);
+});
+document.addEventListener('keydown', e => {
+  if (!$('#v-cards').classList.contains('on') || !order || known.size === order.length) return;
+  if (e.key === 'ArrowRight') go(1); else if (e.key === 'ArrowLeft') go(-1);
+});
 function paintObjDone() {
   const first = OBJ.length - missed.size;
   const msg = first === OBJ.length ? 'Every one, first try. Now say them to a real person.' : 'Go again. The ones you missed get easier every pass.';
@@ -346,7 +370,7 @@ $('#check').onclick = () => {
     <div class="ck ${q ? '' : 'x'}"><i>${q ? '✓' : '!'}</i><span>${q ? 'Ends with a question.' : 'Ask a question. Hand them the next move.'}</span></div></div>`;
   $('#result').classList.add('on');
 };
-$('#show').onclick = () => { $('#result').innerHTML = `<div class="mono">One way to say it</div><div class="model">“${cur.model}”</div>`; $('#result').classList.add('on') };
+$('#show').onclick = () => { $('#result').innerHTML = `<div class="mono">One way to say it</div><div class="model">“${cur.model}”</div>${cur.after ? `<p class="aft">${cur.after}</p>` : ''}`; $('#result').classList.add('on') };
 $('#claude').onclick = async () => {
   const p = `Role play with me. I am a Team RISE associate practicing our good words. You play the person in this moment: "${cur.setup}" Stay in character and react like a real person would: if I use a bad word (sell, close, insurance, annuity, buy, pay, policy, premium, cost, fee, sign, commit, problem, issue, appointment, pitch, meeting, referral, upline, boss, join, recruit, downline, my team, the company, commission, extra income, side hustle, job, financial freedom, "you should", "when are you free", or telling me what to do), get a little guarded. If I use good words (own, contribute, savings program, authorize, moving forward, helping families, financial space, share, chat, visit, personal introductions, mentor, business partner, our team, we, let’s, "would you be open to", recommend, peace of mind, A or B choices), stay open. After 4 exchanges, step out of character and score me: list every bad word I used with the good word to use instead, and rewrite my closing question in good words. Start now with your first line.`;
   try { await navigator.clipboard.writeText(p); toast('Copied. Paste it into Claude.') } catch (e) { $('#line').value = p; toast('Copy the text in the box') }
